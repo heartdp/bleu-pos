@@ -8,10 +8,10 @@ import { toast } from 'react-toastify';
 import PromotionsList from './PromotionsList';
 import './menu.css';
 
-const API_BASE_URL = 'http://127.0.0.1:9001/api';
-const PROMOTION_BASE_URL = 'http://127.0.0.1:9002/api';
-const PRODUCTS_API_URL = 'http://127.0.0.1:8001';
-const MERCHANDISE_API_URL = 'http://127.0.0.1:8002/merchandise/';
+const API_BASE_URL = 'https://sessionservices.onrender.com/api';
+const PROMOTION_BASE_URL = 'https://discountservices-sfvb.onrender.com/api';
+const PRODUCTS_API_URL = 'https://ims-productservices.onrender.com';
+const MERCHANDISE_API_URL = 'https://bleu-stockservices.onrender.com/merchandise/';
 
 function Menu() {
   const navigate = useNavigate();

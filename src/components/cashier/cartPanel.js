@@ -12,9 +12,9 @@ import {
   OrderConfirmationModal
 } from './cartModals';
 
-const SALES_API_URL = 'http://127.0.0.1:9000';
-const DISCOUNTS_API_URL = 'http://127.0.0.1:9002';
-const PRODUCTS_API_URL = 'http://127.0.0.1:8001';
+const SALES_API_URL = 'https://sales-services.onrender.com';
+const DISCOUNTS_API_URL = 'https://discountservices-sfvb.onrender.com';
+const PRODUCTS_API_URL = 'https://ims-productservices.onrender.com';
 
 // ✅ CRITICAL FIX: Helper function to group cart items by promotion TYPE with INSTANCES
 const groupCartItemsByPromotion = (items) => {

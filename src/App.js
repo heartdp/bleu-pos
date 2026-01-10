@@ -66,7 +66,7 @@ function App() {
   // Fetch initial notifications
   const fetchNotifications = async () => {
     try {
-      const response = await fetch('http://localhost:9004/notifications/');
+      const response = await fetch('https://notificationservice-1jp5.onrender.com/notifications/');
       if (response.ok) {
         const data = await response.json();
         setNotifications(data);
@@ -155,7 +155,7 @@ function App() {
 
   const handleMarkAllAsRead = async () => {
     try {
-      const response = await fetch('http://localhost:9004/notifications/read-all', {
+      const response = await fetch('https://notificationservice-1jp5.onrender.com/notifications/read-all', {
         method: 'PATCH',
       });
       

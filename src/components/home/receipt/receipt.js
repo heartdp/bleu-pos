@@ -8,7 +8,7 @@ import axios from 'axios';
 import QRCode from 'qrcode';
 import dayjs from 'dayjs';
 
-const API_BASE_URL = 'http://127.0.0.1:9006/api';
+const API_BASE_URL = 'https://receiptservices.onrender.com/api';
 
 function Receipt() {
   const [receiptData, setReceiptData] = useState({

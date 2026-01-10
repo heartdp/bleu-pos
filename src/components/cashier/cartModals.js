@@ -334,7 +334,7 @@ export const DiscountsModal = ({
     
     try {
       const token = localStorage.getItem('authToken');
-      const response = await fetch('http://127.0.0.1:4000/users/verify-pin', {
+      const response = await fetch('https://authservices-npr8.onrender.com/users/verify-pin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ pin })

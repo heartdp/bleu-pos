@@ -9,11 +9,11 @@ import Loading from "../home/shared/loading";
 import { UnableToLoadData, NoData } from "../home/shared/exportModal";
 import { FaFilter, FaSearch } from "react-icons/fa";
 
-const SALES_API_BASE_URL = 'http://127.0.0.1:9000';
-const ONLINE_API_BASE_URL = 'http://127.0.0.1:7004';
-const AUTH_API_BASE_URL = 'http://127.0.0.1:4000';
-const INVENTORY_API_BASE_URL = 'http://127.0.0.1:8002';
-const NOTIFICATION_API_BASE_URL = 'http://127.0.0.1:9004';
+const SALES_API_BASE_URL = 'https://sales-services.onrender.com';
+const ONLINE_API_BASE_URL = 'https://ordering-service-8e9d.onrender.com';
+const AUTH_API_BASE_URL = 'https://authservices-npr8.onrender.com';
+const INVENTORY_API_BASE_URL = 'https://bleu-stockservices.onrender.com';
+const NOTIFICATION_API_BASE_URL = 'https://notificationservice-1jp5.onrender.com';
 
 // Helper function to send order emails
 const sendOrderEmail = async (order, emailType, token) => {

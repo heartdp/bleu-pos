@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import QRCode from 'qrcode';
 import "./orderPanel.css";
 
-const API_BASE_URL = 'http://127.0.0.1:9006/api';
+const API_BASE_URL = 'https://receiptservices.onrender.com';
 
 const OrderModals = ({
   // PIN Modal props
@@ -140,7 +140,7 @@ const OrderModals = ({
         return;
       }
 
-      const response = await fetch(`http://127.0.0.1:4000/users/employee_name?username=${username}`, {
+      const response = await fetch(`https://authservices-npr8.onrender.com/users/employee_name?username=${username}`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       if (response.ok) {

@@ -10,7 +10,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import './confirmAlertCustom.css';
 
-const NOTIFICATION_API_URL = 'http://localhost:9004/notifications';
+const NOTIFICATION_API_URL = 'https://notificationservice-1jp5.onrender.com/notifications';
 const NOTIFICATION_WS_URL = 'ws://localhost:9004/ws/notifications';
 
 // Helper to format time difference
@@ -191,7 +191,7 @@ const Navbar = ({ isCartOpen, isOrderPanelOpen, isDisabled = false }) => {
     if (isRead) return;
     
     try {
-      const response = await fetch(`http://localhost:9004/notifications/${notificationId}/read`, {
+      const response = await fetch(`https://notificationservice-1jp5.onrender.com/notifications/${notificationId}/read`, {
         method: 'PATCH',
       });
       
@@ -254,7 +254,7 @@ const Navbar = ({ isCartOpen, isOrderPanelOpen, isDisabled = false }) => {
         
         const fetchName = async () => {
           try {
-            const response = await fetch(`http://127.0.0.1:4000/users/employee_name?username=${storedUsername}`, {
+            const response = await fetch(`https://authservices-npr8.onrender.com/users/employee_name?username=${storedUsername}`, {
               headers: { "Authorization": `Bearer ${storedToken}` }
             });
             if (!response.ok) {

@@ -28,10 +28,10 @@ const getAuthToken = () => {
   return localStorage.getItem("authToken");
 };
 
-const API_URL = "http://127.0.0.1:9000/auth/transaction_history/all";
-const STATISTICS_API_URL = "http://127.0.0.1:9000/auth/transaction_history/statistics";
-const CASHIERS_API_URL = "http://127.0.0.1:4000/users/cashiers";
-const PARTIAL_REFUND_API_URL = "http://127.0.0.1:9000/auth/purchase_orders";
+const API_URL = "https://sales-services.onrender.com/auth/transaction_history/all";
+const STATISTICS_API_URL = "https://sales-services.onrender.com/auth/transaction_history/statistics";
+const CASHIERS_API_URL = "https://authservices-npr8.onrender.com/users/cashiers";
+const PARTIAL_REFUND_API_URL = "https://sales-services.onrender.com/auth/purchase_orders";
 
 // Helper function to calculate correct refund amount
 const calculateCorrectRefundAmount = (transaction) => {

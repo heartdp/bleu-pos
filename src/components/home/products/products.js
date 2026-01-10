@@ -10,8 +10,8 @@ import { FaFilter, FaSearch } from "react-icons/fa";
 import '../../confirmAlertCustom.css';
 import { UnableToLoadData, NoData } from "../shared/exportModal";
 
-const API_BASE_URL = "http://127.0.0.1:8001";
-const MERCHANDISE_API_URL = "http://127.0.0.1:8002";
+const API_BASE_URL = "https://ims-productservices.onrender.com";
+const MERCHANDISE_API_URL = "https://bleu-stockservices.onrender.com";
 const getAuthToken = () => localStorage.getItem("authToken");
 
 function Products() {

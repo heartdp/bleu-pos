@@ -14,7 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 // API Configuration
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:9000';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://sales-services.onrender.com';
 
 const formatValue = (value, format) => {
   return format === "currency"

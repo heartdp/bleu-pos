@@ -15,7 +15,7 @@ import {
   FaFileInvoice
 } from 'react-icons/fa';
 
-const API_BASE_URL = 'http://127.0.0.1:9001/api';
+const API_BASE_URL = 'https://sessionservices.onrender.com/api';
 
 function ClosedSessionSummary() {
   const [sessionSummary, setSessionSummary] = useState(null);

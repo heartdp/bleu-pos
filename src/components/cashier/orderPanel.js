@@ -4,8 +4,8 @@ import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 import OrderModals from './orderModals';
 
-const AUTH_API_BASE_URL = 'http://127.0.0.1:4000';
-const SALES_API_BASE_URL = 'http://127.0.0.1:9000';
+const AUTH_API_BASE_URL = 'https://authservices-npr8.onrender.com';
+const SALES_API_BASE_URL = 'https://sales-services.onrender.com';
 
 function OrderPanel({ order, onClose, isOpen, isStore, onUpdateStatus, onFullRefund, onPartialRefund }) {
   const [showPinModal, setShowPinModal] = useState(false);

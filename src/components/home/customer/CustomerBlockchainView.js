@@ -12,8 +12,8 @@ const CustomerBlockchainView = () => {
   const saleId = parseInt(window.location.search.substring(1));
 
   // API endpoints - separate services for security
-  const POS_API = 'http://127.0.0.1:9000/auth/purchase_orders/receipt';
-  const BLOCKCHAIN_API = 'http://127.0.0.1:9005/blockchain-logs/api/blockchain-logs/sale';
+  const POS_API = 'https://sales-services.onrender.com/auth/purchase_orders/receipt';
+  const BLOCKCHAIN_API = 'https://blockchainservices.onrender.com/blockchain-logs/api/blockchain-logs/sale';
 
   useEffect(() => {
     if (saleId) {

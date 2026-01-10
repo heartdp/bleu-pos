@@ -23,8 +23,8 @@ import {
 import axios from "axios";
 import CustomDateModal from "../shared/customDateModal";
 
-const BLOCKCHAIN_API_URL = "http://localhost:9005/blockchain";
-const USER_API_URL = "http://127.0.0.1:4000/users";
+const BLOCKCHAIN_API_URL = "https://blockchainservices.onrender.com/blockchain";
+const USER_API_URL = "https://authservices-npr8.onrender.com/users";
 
 // Services to show by default in the Transaction Logs tab
 const REQUIRED_TRANSACTION_SERVICES = [

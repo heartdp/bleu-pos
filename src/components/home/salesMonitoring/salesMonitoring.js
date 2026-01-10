@@ -96,7 +96,7 @@ function SalesMonitoring() {
         const authToken = localStorage.getItem("authToken");
         if (!authToken) return;
 
-        const response = await fetch("http://127.0.0.1:4000/users/cashiers", {
+        const response = await fetch("https://authservices-npr8.onrender.com/users/cashiers", {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
@@ -168,7 +168,7 @@ function SalesMonitoring() {
       }
 
       const response = await fetch(
-        "http://localhost:9000/auth/sales_metrics/monitoring",
+        "https://sales-services.onrender.com/auth/sales_metrics/monitoring",
         {
           method: "POST",
           headers: {
@@ -299,7 +299,7 @@ function SalesMonitoring() {
         if (!authToken) return;
 
         const response = await fetch(
-          `http://127.0.0.1:4000/users/employee_name?username=${metrics.topCashier.name}`,
+          `https://authservices-npr8.onrender.com/users/employee_name?username=${metrics.topCashier.name}`,
           {
             headers: { Authorization: `Bearer ${authToken}` },
           }

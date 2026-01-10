@@ -62,7 +62,7 @@ const NotificationModal = ({ isOpen, onClose, notifications, onMarkAllAsRead }) 
     if (isRead) return;
     
     try {
-      const response = await fetch(`http://localhost:9004/notifications/${notificationId}/read`, {
+      const response = await fetch(`https://notificationservice-1jp5.onrender.com/notifications/${notificationId}/read`, {
         method: 'PATCH',
       });
       

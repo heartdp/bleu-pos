@@ -21,12 +21,12 @@ import { toast } from 'react-toastify';
 
 
 // API Endpoints
-const SESSION_API_URL = 'http://127.0.0.1:9001/api';
-const CANCELLED_ORDERS_API_URL = 'http://127.0.0.1:9000/auth/cancelled_orders';
-const SALES_METRICS_API_URL = 'http://127.0.0.1:9000/auth/sales_metrics';
-const CASH_TALLY_API_URL = 'http://127.0.0.1:9001/api/auth/cash_tally';
-const TOP_PRODUCTS_API_URL = 'http://127.0.0.1:9000/auth/top_products';
-const SPILLAGE_API_URL = 'http://127.0.0.1:9003/wastelogs';
+const SESSION_API_URL = 'https://sessionservices.onrender.com/api';
+const CANCELLED_ORDERS_API_URL = 'https://sales-services.onrender.com/auth/cancelled_orders';
+const SALES_METRICS_API_URL = 'https://sales-services.onrender.com/auth/sales_metrics';
+const CASH_TALLY_API_URL = 'https://sessionservices.onrender.com/api/auth/cash_tally';
+const TOP_PRODUCTS_API_URL = 'https://sales-services.onrender.com/auth/top_products';
+const SPILLAGE_API_URL = 'https://wasteservices.onrender.com/wastelogs';
 
 function CashierSales({ shiftLabel = "Morning Shift", shiftTime = "6:00AM – 2:00PM", date }) {
   const [activeTab, setActiveTab] = useState('summary');

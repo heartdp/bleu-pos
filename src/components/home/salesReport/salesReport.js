@@ -15,8 +15,8 @@ import SalesReportModal from "./salesReportModal";
 import Loading from "../shared/loading";
 import '../../confirmAlertCustom.css';
 
-const CASHIERS_API_URL = "http://127.0.0.1:4000/users/cashiers";
-const EMPLOYEE_NAME_API_URL = "http://127.0.0.1:4000/users/employee_name";
+const CASHIERS_API_URL = "https://authservices-npr8.onrender.comsers/cashiers";
+const EMPLOYEE_NAME_API_URL = "https://authservices-npr8.onrender.com/users/employee_name";
 
 // Helper function to format dates for the API (YYYY-MM-DD)
 const formatDateForAPI = (date) => {
@@ -152,7 +152,7 @@ function SalesReport() {
             throw new Error("Authentication token not found. Please log in.");
         }
 
-        const response = await fetch('http://127.0.0.1:9000/auth/sales_metrics/report', {
+        const response = await fetch('https://sales-services.onrender.com/auth/sales_metrics/report', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

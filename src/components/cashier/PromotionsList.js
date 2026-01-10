@@ -35,7 +35,7 @@ const PromotionsList = React.memo(({ addToCart, products = [] }) => {
           throw new Error('No authentication token found');
         }
 
-        const response = await fetch('http://127.0.0.1:9002/api/promotions/bogo', {
+        const response = await fetch('https://discountservices-sfvb.onrender.com/api/promotions/bogo', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,

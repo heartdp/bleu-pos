@@ -54,7 +54,7 @@ function Spillage() {
     const fetchCashiers = async () => {
       try {
         const token = localStorage.getItem("authToken");
-        const response = await fetch("http://localhost:4000/users/cashiers", {
+        const response = await fetch("https://authservices-npr8.onrender.com/users/cashiers", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -85,7 +85,7 @@ function Spillage() {
       if (username && token) {
         try {
           const response = await fetch(
-            `http://127.0.0.1:4000/users/employee_name?username=${username}`,
+            `https://authservices-npr8.onrender.com/users/employee_name?username=${username}`,
             {
               headers: {
                 "Authorization": `Bearer ${token}`,
@@ -129,7 +129,7 @@ function Spillage() {
   const fetchSpillageData = async () => {
     try {
       const token = localStorage.getItem("authToken");
-      const response = await fetch("http://localhost:9003/wastelogs/", {
+      const response = await fetch("https://wasteservices.onrender.com/wastelogs/", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

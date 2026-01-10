@@ -23,7 +23,7 @@ const getUserRole = () => {
   return localStorage.getItem("userRole");
 };
 
-const API_BASE_URL = "http://localhost:9002/api";
+const API_BASE_URL = "https://discountservices-sfvb.onrender.com/api";
 
 // API Helper Function
 const apiFetch = async (endpoint, method = "GET", body = null) => {
