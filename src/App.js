@@ -81,7 +81,7 @@ function App() {
     fetchNotifications();
 
     // Establish WebSocket connection
-    const ws = new WebSocket('ws://localhost:9004/ws/notifications');
+    const ws = new WebSocket('wss://notificationservice-1jp5.onrender.com/ws/notifications');
     wsRef.current = ws;
 
     ws.onopen = () => {
