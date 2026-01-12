@@ -11,7 +11,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import './confirmAlertCustom.css';
 
 const NOTIFICATION_API_URL = 'https://notificationservice-1jp5.onrender.com/notifications';
-const NOTIFICATION_WS_URL = 'ws://localhost:9004/ws/notifications';
+const NOTIFICATION_WS_URL = 'wss://notificationservice-1jp5.onrender.com/ws/notifications';
 
 // Helper to format time difference
 const timeSince = (dateString) => {
