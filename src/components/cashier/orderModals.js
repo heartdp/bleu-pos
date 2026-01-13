@@ -71,7 +71,9 @@ const OrderModals = ({
   const generateBlockchainUrl = () => {
     // Generate URL for blockchain transaction view
     const baseUrl = window.location.origin;
-    return `${baseUrl}/blockchain?${order.id}`;
+    // Remove "SO-" prefix if present
+    const saleId = order.id.toString().replace(/^SO-/, '');
+    return `${baseUrl}/blockchain?${saleId}`;
   };
 
   const fetchReceiptConfig = async () => {
