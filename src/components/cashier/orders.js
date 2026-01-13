@@ -958,7 +958,7 @@ if (onlineResponse.status === 'fulfilled' && onlineResponse.value.ok) {
     if (location.state?.selectedOrderId && location.state?.openPanel) {
       console.log('📍 Navigation state detected:', location.state);
       
-      const orderIdToFind = String(location.state.selectedOrderId).replace(/^SO-/, '');
+      const orderIdToFind = String(location.state.selectedOrderId).replace(/^/, '');
       console.log('🔍 Looking for order ID:', orderIdToFind);
       
       // Search in both store and online orders
