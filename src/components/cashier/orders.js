@@ -927,19 +927,22 @@ if (onlineResponse.status === 'fulfilled' && onlineResponse.value.ok) {
   const ordersData = activeTab === "store" ? storeOrders : onlineOrders;
   
   const filteredData = ordersData.filter(order => {
-    const text = searchText.toLowerCase();
-    const matchesSearch = String(order.id).toLowerCase().includes(text) || 
-                         (order.dateDisplay && order.dateDisplay.toLowerCase().includes(text)) || 
-                         (order.customerName && order.customerName.toLowerCase().includes(text)) || 
-                         order.status.toLowerCase().includes(text);
-    const matchesDate = filterDate ? order.localDateString === filterDate : true;
-    const matchesStatus = filterStatus ? order.status.toUpperCase() === filterStatus.toUpperCase() : true;
-    
-    const isPending = order.status === 'PENDING';
-    const matchesCashier = isPending || order.cashierName === username;
-    
-    return matchesSearch && matchesDate && matchesStatus && matchesCashier;
-  });
+  const text = searchText.toLowerCase();
+  const matchesSearch = String(order.id).toLowerCase().includes(text) || 
+                       (order.dateDisplay && order.dateDisplay.toLowerCase().includes(text)) || 
+                       (order.customerName && order.customerName.toLowerCase().includes(text)) || 
+                       order.status.toLowerCase().includes(text);
+  const matchesDate = filterDate ? order.localDateString === filterDate : true;
+  const matchesStatus = filterStatus ? order.status.toUpperCase() === filterStatus.toUpperCase() : true;
+  
+  const isPending = order.status === 'processing' || order.status === 'pending';
+  
+  const orderCashierLower = (order.cashierName || '').toLowerCase();
+  const usernameLower = (username || '').toLowerCase();
+  const matchesCashier = isPending || orderCashierLower === usernameLower;
+  
+  return matchesSearch && matchesDate && matchesStatus && matchesCashier;
+});
 
   const clearFilters = () => { 
     setSearchText(""); 
