@@ -269,12 +269,13 @@ function SalesReport() {
       cashDrawerDiscrepancy: reportData.cashDrawer?.discrepancy || 0,
       reportedBy: reportData.cashDrawer?.reportedBy || 'N/A',
       verifiedBy: reportData.cashDrawer?.verifiedBy || 'N/A',
-      refundsList: processedRefundsList, 
-    
+      refundsList: processedRefundsList
+    };
+
     generatePDFReport(
-      reportData.productBreakdown, 
-      enhancedTotals, 
-      activeTab, 
+      reportData.productBreakdown,
+      enhancedTotals,
+      activeTab,
       currentPeriodText,
       selectedCashier
     );
@@ -600,5 +601,6 @@ function SalesReport() {
     </div>
   );
 }
+
 
 export default SalesReport;
