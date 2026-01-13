@@ -30,7 +30,7 @@ import CustomerBlockchainView from './components/home/customer/CustomerBlockchai
 
 function RedirectToLoginSystem() {
   useEffect(() => {
-    window.location.href = 'https://bleu-ums-zeta.vercel.app/';
+    window.location.href = 'http://localhost:4002/';
   }, []);
 
   return null;
@@ -81,7 +81,7 @@ function App() {
     fetchNotifications();
 
     // Establish WebSocket connection
-    const ws = new WebSocket('wss://notificationservice-1jp5.onrender.com/ws/notifications');
+    const ws = new WebSocket('ws://notificationservice-1jp5.onrender.com/ws/notifications');
     wsRef.current = ws;
 
     ws.onopen = () => {

@@ -23,7 +23,7 @@ function LogSpillageDeleteModal({ show, onClose, onConfirm, spillage }) {
 
     try {
       if (normalizedCategory === "merchandise") {
-        await fetch("http://localhost:8002/merchandise/restock-from-deleted-spillage", {
+        await fetch("https://bleu-stockservices.onrender.com/merchandise/restock-from-deleted-spillage", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -32,7 +32,7 @@ function LogSpillageDeleteModal({ show, onClose, onConfirm, spillage }) {
           body: JSON.stringify({ spillage_item: spillageItem }),
         });
       } else {
-        await fetch("http://127.0.0.1:8002/ingredients/restock-from-deleted-spillage", {
+        await fetch("https://bleu-stockservices.onrender.com/ingredients/restock-from-deleted-spillage", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -41,7 +41,7 @@ function LogSpillageDeleteModal({ show, onClose, onConfirm, spillage }) {
           body: JSON.stringify({ spillage_item: spillageItem }),
         });
 
-        await fetch("http://localhost:8002/materials/restock-from-deleted-spillage", {
+        await fetch("https://bleu-stockservices.onrender.com/materials/restock-from-deleted-spillage", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -65,7 +65,7 @@ function LogSpillageDeleteModal({ show, onClose, onConfirm, spillage }) {
 
     // ✅ ONLY delete spillage - backend handles inventory in background
     const response = await fetch(
-      `http://127.0.0.1:9003/wastelogs/${spillage.spillage_id}`,
+      `https://wasteservices.onrender.com/wastelogs/${spillage.spillage_id}`,
       {
         method: "DELETE",
         headers: {

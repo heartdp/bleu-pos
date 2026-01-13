@@ -16,7 +16,7 @@ const SALES_API_URL = 'https://sales-services.onrender.com';
 const DISCOUNTS_API_URL = 'https://discountservices-sfvb.onrender.com';
 const PRODUCTS_API_URL = 'https://ims-productservices.onrender.com';
 
-// ✅ CRITICAL FIX: Helper function to group cart items by promotion TYPE with INSTANCES
+// Helper function to group cart items by promotion TYPE with INSTANCES
 const groupCartItemsByPromotion = (items) => {
   const groups = [];
   const processedIndices = new Set();
@@ -40,7 +40,7 @@ const groupCartItemsByPromotion = (items) => {
       
       console.log(`  Creating BOGO group for promoId: ${item.bogoPromoId}`);
       
-      // ✅ FIX: Expand items with quantity > 1 into individual instances
+      //Expand items with quantity > 1 into individual instances
       items.forEach((otherItem, otherIndex) => {
         if (otherItem.isFromBogo && otherItem.bogoPromoId === item.bogoPromoId) {
           // Split item into individual instances based on quantity
@@ -50,11 +50,10 @@ const groupCartItemsByPromotion = (items) => {
             bogoGroup.items.push({
               item: {
                 ...otherItem,
-                quantity: 1, // ✅ Each instance has quantity 1
+                quantity: 1, 
                 instanceId: instanceId,
                 instanceNumber: i + 1,
                 originalIndex: otherIndex,
-                // ✅ Deep clone addons to prevent shared references
                 addons: otherItem.addons ? JSON.parse(JSON.stringify(otherItem.addons)) : []
               },
               index: otherIndex,
@@ -276,7 +275,7 @@ const CartPanel = ({
         return;
       }
 
-      // ✅ FIXED: Calculate BOGO promotions AND regular item promotions separately
+      //Calculate BOGO promotions AND regular item promotions separately
       const bogoGroupPromotions = new Map();
       const regularItemPromotions = new Map();
       
@@ -340,8 +339,6 @@ const CartPanel = ({
                 itemPromotions: itemPromotions
               });
             }
-          // In cartPanel.jsx, around line 420-470
-// Replace the 2-product BOGO calculation with this:
 
 } else if (bogoProducts.length === 2) {
   const buyProductItems = groupItems.filter(gi => gi.item.name === bogoProducts[0]);
@@ -361,7 +358,7 @@ const CartPanel = ({
     const getItemPrice = getProductItems[0].item.price;
     const buyItemPrice = buyProductItems[0].item.price;
     
-    // ✅ FIXED: Apply promotion to BOTH buy and get items
+    //Apply promotion to BOTH buy and get items
     let getItemDiscount = 0;
     let buyItemDiscount = 0;
     
@@ -377,7 +374,7 @@ const CartPanel = ({
     
     const totalDiscount = getItemDiscount + buyItemDiscount;
     
-    // ✅ FIXED: Create item promotions for BOTH products
+    // Create item promotions for BOTH products
     const itemPromotions = [];
     
     // Add promotions for "buy" items
@@ -414,15 +411,15 @@ const CartPanel = ({
       groupId,
       promoId: bogoPromo.id,
       name: firstItem.bogoPromoName,
-      discountAmount: totalDiscount, // ✅ Total of both buy and get discounts
-      itemPromotions: itemPromotions // ✅ Now includes BOTH products
+      discountAmount: totalDiscount, 
+      itemPromotions: itemPromotions 
     });
   }
 }
         });
       }
 
-      // ✅ FIXED: Calculate promotions for NON-BOGO items
+      // Calculate promotions for NON-BOGO items
       const parsedPromotions = promotions
         .filter(p => {
           if (!p || typeof p !== 'object') return false;
@@ -474,70 +471,68 @@ const CartPanel = ({
         });
 
       for (const promo of parsedPromotions) {
-        if (!Array.isArray(promo.selectedProducts)) continue;
-        
-        // ✅ FIXED: Only apply to NON-BOGO items
-        const eligibleItems = cartItems.filter((item, itemIndex) => {
-          if (item.type !== 'product') return false;
-          if (item.isFromBogo) return false; // ✅ Skip BOGO items
-          
-          if (promo.applicationType === 'all_products') {
-            return true;
-          }
-          
-          if (promo.applicationType === 'specific_categories') {
-            return promo.selectedProducts.includes(item.category);
-          }
-          
-          if (promo.applicationType === 'specific_products') {
-            const matchesProductName = promo.selectedProducts.includes(item.name);
-            const matchesCategory = promo.selectedProducts.includes(item.category);
-            return matchesProductName || matchesCategory;
-          }
-          
-          return false;
-        });
-        
-        if (!eligibleItems.length) continue;
-
-        if (promo.promotionType === 'percentage' || promo.promotionType === 'fixed') {
-          eligibleItems.forEach(item => {
-            const itemIndex = cartItems.findIndex(ci => ci === item);
-            
-            const discountedQty = appliedDiscounts.reduce((total, discountData) => {
-              const itemDiscountInfo = discountData.itemDiscounts?.find(d => d.itemIndex === itemIndex);
-              return total + (itemDiscountInfo ? itemDiscountInfo.quantity : 0);
-            }, 0);
-            
-            const eligibleQty = item.quantity - discountedQty;
-            
-            if (eligibleQty > 0) {
-              let itemPromotionAmount = 0;
-              
-              if (promo.promotionType === 'percentage') {
-                itemPromotionAmount = eligibleQty * (parseFloat(item.price) * (parseFloat(promo.promotionValue) / 100));
-              } else {
-                itemPromotionAmount = eligibleQty * Math.min(parseFloat(item.price), parseFloat(promo.promotionValue));
-              }
-              
-              const currentBest = regularItemPromotions.get(itemIndex);
-              const shouldReplace = !currentBest || itemPromotionAmount > currentBest.discount;
-              
-              if (shouldReplace) {
-                regularItemPromotions.set(itemIndex, {
-                  itemIndex: itemIndex,
-                  promo: promo,
-                  discount: itemPromotionAmount,
-                  priority: promo.priority,
-                  quantity: eligibleQty
-                });
-              }
-            }
-          });
-        }
-      }
+  if (!Array.isArray(promo.selectedProducts)) continue;
+  
+  // 1. Find all items in the cart that qualify for THIS specific promotion
+  const eligibleItemsWithIndices = cartItems
+    .map((item, index) => ({ item, index }))
+    .filter(({ item }) => {
+      if (item.type !== 'product' || item.isFromBogo) return false;
       
-      // ✅ FIXED: Combine BOTH BOGO and regular promotions
+      if (promo.applicationType === 'all_products') return true;
+      if (promo.applicationType === 'specific_categories') return promo.selectedProducts.includes(item.category);
+      if (promo.applicationType === 'specific_products') {
+        return promo.selectedProducts.includes(item.name) || promo.selectedProducts.includes(item.category);
+      }
+      return false;
+    });
+
+  if (!eligibleItemsWithIndices.length) continue;
+
+  // 2. Calculate the total quantity of these eligible items combined
+  const totalEligibleQtyInCart = eligibleItemsWithIndices.reduce((sum, { item }) => sum + item.quantity, 0);
+  const minQty = parseInt(promo.minimum_quantity) || 1;
+
+  // 3. THRESHOLD CHECK: If we haven't reached min qty, skip this promotion
+  if (totalEligibleQtyInCart < minQty) {
+    console.log(`Promo "${promo.name}" ignored: Needs ${minQty}, cart has ${totalEligibleQtyInCart}`);
+    continue; 
+  }
+
+  // 4. SCALING LOGIC: Apply "for every achieved minimum quantity"
+  const numBundles = Math.floor(totalEligibleQtyInCart / minQty);
+  let totalUnitsToDiscount = numBundles * minQty;
+
+  // 5. Apply the discount across the eligible items
+  if (promo.promotionType === 'percentage' || promo.promotionType === 'fixed') {
+    eligibleItemsWithIndices.forEach(({ item, index }) => {
+      if (totalUnitsToDiscount <= 0) return;
+
+      const discountedQtyForItem = Math.min(item.quantity, totalUnitsToDiscount);
+      totalUnitsToDiscount -= discountedQtyForItem;
+
+      let itemPromotionAmount = 0;
+      if (promo.promotionType === 'percentage') {
+        itemPromotionAmount = discountedQtyForItem * (parseFloat(item.price) * (parseFloat(promo.promotionValue) / 100));
+      } else {
+        itemPromotionAmount = discountedQtyForItem * Math.min(parseFloat(item.price), parseFloat(promo.promotionValue));
+      }
+
+      const currentBest = regularItemPromotions.get(index);
+      if (!currentBest || itemPromotionAmount > currentBest.discount) {
+        regularItemPromotions.set(index, {
+          itemIndex: index,
+          promo: promo,
+          discount: itemPromotionAmount,
+          priority: promo.priority,
+          quantity: discountedQtyForItem
+        });
+      }
+    });
+  }
+}
+      
+      //Combine BOTH BOGO and regular promotions
       const allItemPromotions = [];
       let totalDiscountAmount = 0;
       const promotionNames = [];
@@ -665,13 +660,13 @@ const CartPanel = ({
 
   const removeAllDiscounts = () => setAppliedDiscounts([]);
 
-  // ✅ FIX: Updated openAddonsModal to handle instances
+  // Updated openAddonsModal to handle instances
   const openAddonsModal = async (itemIndex, instanceId = null) => {
     const item = cartItems[itemIndex];
     if (!item || !item.id) return;
     
     setSelectedItemIndex(itemIndex);
-    setSelectedInstanceId(instanceId); // Track which instance we're editing
+    setSelectedInstanceId(instanceId); 
     setIsAddonsLoading(true);
     setShowAddonsModal(true);
     
@@ -684,7 +679,7 @@ const CartPanel = ({
       const data = await response.json();
       setAvailableAddons(data);
       
-      // ✅ Load addons for this specific instance or the main item
+      // Load addons for this specific instance or the main item
       setAddons(item.addons || []);
     } catch (error) {
       console.error("Failed to fetch available add-ons:", error);
@@ -715,15 +710,13 @@ const CartPanel = ({
     });
   };
 
-  // ✅ FIX: Updated saveAddons to handle instances
+  // Updated saveAddons to handle instances
   const saveAddons = () => {
     if (selectedItemIndex !== null) {
       const updatedCart = [...cartItems];
       
-      // If editing a BOGO instance, we need special handling
       if (selectedInstanceId) {
-        // The addons are already set correctly for this instance
-        // because group.items contains individual instances
+        
         updatedCart[selectedItemIndex].addons = addons;
       } else {
         // Regular item
@@ -781,12 +774,11 @@ const CartPanel = ({
             if (itemIndex === -1) continue;
 
             const item = updatedCart[itemIndex];
-            // ✅ Each instance has quantity: 1, so just remove it
+            // Each instance has quantity: 1, so just remove it
             if (item.quantity <= 1) {
               updatedCart = updatedCart.filter((_, idx) => idx !== itemIndex);
               remaining -= 1;
             } else {
-              // This shouldn't happen with instance-based items
               updatedCart[itemIndex] = { ...item, quantity: item.quantity - 1 };
               remaining -= 1;
             }
@@ -822,13 +814,12 @@ const CartPanel = ({
         return updatedCart;
       });
     } else {
-      // Increasing: add one complete bundle (instances already created in cart)
-      // This requires the BOGO modal to add items with quantity: 1 each time
+      
       console.log('⚠️ To add a BOGO bundle, add items individually from the BOGO modal');
     }
   };
 
-  // ✅ NEW: Function to remove entire BOGO group (by promoId)
+  // Function to remove entire BOGO group (by promoId)
   const removeBogoGroup = (promoId) => {
     setCartItems(prev => {
       const filtered = prev.filter(item => item.bogoPromoId !== promoId);
@@ -952,7 +943,6 @@ const confirmTransaction = async (gcashRef = null) => {
     return;
   }
   
-  // ✅ CRITICAL FIX: Build appliedPromotions to include ALL promotion types
   let appliedPromotions = [];
   
   if (autoPromotion && autoPromotion.itemPromotions && autoPromotion.itemPromotions.length > 0) {
@@ -965,7 +955,7 @@ const confirmTransaction = async (gcashRef = null) => {
       if (!promotionGroups.has(promoName)) {
         promotionGroups.set(promoName, {
           promotionName: promoName,
-          promotionId: 0, // Will be determined later
+          promotionId: 0, 
           itemPromotions: []
         });
       }
@@ -1004,7 +994,7 @@ const confirmTransaction = async (gcashRef = null) => {
       discountId: d.discount.id,
       itemDiscounts: d.itemDiscounts || []
     })),
-    appliedPromotions: appliedPromotions, // ✅ Use the properly structured array
+    appliedPromotions: appliedPromotions, 
     promotionalDiscountAmount: promotionalDiscountValue,
     promotionalDiscountName: autoPromotion?.name || null,
     manualDiscountAmount: manualDiscountValue,

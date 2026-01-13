@@ -146,7 +146,6 @@ function BlockchainActivityLogs() {
 
       // Fetch names for all usernames
       const namePromises = Array.from(allUsernames).map(async (username) => {
-        // Skip system users - don't make API calls for them
         if (username === "System" || username === "SYSTEM_AUTO_CANCEL") {
           return { username, fullName: "System (Automated)" };
         }
@@ -321,10 +320,8 @@ function BlockchainActivityLogs() {
         params,
       });
 
-      // Start filtering the logs
       let transactionLogs = response.data;
 
-      // Determine the set of allowed services: user-filter OR required list
       let allowedServices;
 
       if (serviceFilter) {
@@ -333,12 +330,10 @@ function BlockchainActivityLogs() {
         allowedServices = REQUIRED_TRANSACTION_SERVICES;
       }
 
-      // Apply the service filter to the logs
       transactionLogs = transactionLogs.filter(log =>
         allowedServices.includes(log.service_identifier)
       );
 
-      // Filter by action
       transactionLogs = transactionLogs.filter(log => {
         const isTransactionAction = ['CREATE', 'UPDATE', 'REFUND', 'CANCEL', 'AUTO_CANCEL', 'CLOSE_SESSION'].includes(log.action);
         return isTransactionAction;
@@ -602,11 +597,11 @@ function BlockchainActivityLogs() {
     return 'Transaction';
   };
 
-  // Filter groups by search term
   const filteredGroups = groupedLogs.filter((group) => {
-    if (!searchTerm) return true;
+    const normalizedSearch = searchTerm.trim().toLowerCase();
+    
+    if (!normalizedSearch) return true;
 
-    const searchLower = searchTerm.toLowerCase();
     const entityTitle = activeTab === "transaction"
       ? getTransactionTitle(group).toLowerCase()
       : getEntityTitle(group).toLowerCase();
@@ -620,9 +615,9 @@ function BlockchainActivityLogs() {
       .join(" ");
 
     return (
-      entityTitle.includes(searchLower) ||
-      actorNames.includes(searchLower) ||
-      descriptions.includes(searchLower)
+      entityTitle.includes(normalizedSearch) ||
+      actorNames.includes(normalizedSearch) ||
+      descriptions.includes(normalizedSearch)
     );
   });
 

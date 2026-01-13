@@ -63,7 +63,7 @@ function LogSpillageModal({ show, onClose, onSave, loggedByName }) {
       }
 
       const response = await fetch(
-        "http://localhost:4000/users/cashiers",
+        "https://authservices-npr8.onrender.com//users/cashiers",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -101,7 +101,7 @@ function LogSpillageModal({ show, onClose, onSave, loggedByName }) {
       const token = localStorage.getItem("authToken");
       
       const response = await fetch(
-        "http://localhost:9003/wastelogs/sessions/active",
+        "https://wasteservices.onrender.com/wastelogs/sessions/active",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -173,7 +173,7 @@ function LogSpillageModal({ show, onClose, onSave, loggedByName }) {
       }
 
       const response = await fetch(
-        `http://localhost:9003/wastelogs/products-sold?session_id=${sessionId}`,
+        `https://wasteservices.onrender.com/wastelogs/products-sold?session_id=${sessionId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -239,7 +239,7 @@ function LogSpillageModal({ show, onClose, onSave, loggedByName }) {
 
     try {
       const response = await fetch(
-        "http://localhost:8002/merchandise/deduct-from-spillage",
+        "https://bleu-stockservices.onrender.com/merchandise/deduct-from-spillage",
         {
           method: "POST",
           headers: {
@@ -275,7 +275,7 @@ function LogSpillageModal({ show, onClose, onSave, loggedByName }) {
 
     try {
       const ingredientsResponse = await fetch(
-        "http://127.0.0.1:8002/ingredients/deduct-from-spillage",
+        "https://bleu-stockservices.onrender.com/ingredients/deduct-from-spillage",
         {
           method: "POST",
           headers: {
@@ -295,7 +295,7 @@ function LogSpillageModal({ show, onClose, onSave, loggedByName }) {
       }
 
       const materialsResponse = await fetch(
-        "http://localhost:8002/materials/deduct-from-spillage",
+        "https://bleu-stockservices.onrender.com/materials/deduct-from-spillage",
         {
           method: "POST",
           headers: {
@@ -354,7 +354,7 @@ function LogSpillageModal({ show, onClose, onSave, loggedByName }) {
       logged_by: loggedByName
     };
 
-    const response = await fetch("http://localhost:9003/wastelogs/", {
+    const response = await fetch("https://wasteservices.onrender.com/wastelogs/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -370,7 +370,7 @@ function LogSpillageModal({ show, onClose, onSave, loggedByName }) {
 
     const savedSpillage = await response.json();
     
-    // ✅ Close immediately - inventory handled by backend
+    // Close immediately - inventory handled by backend
     console.log("Spillage logged successfully. Inventory will be updated in background.");
     onSave(savedSpillage);
     onClose();

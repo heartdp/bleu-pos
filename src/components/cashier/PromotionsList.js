@@ -84,7 +84,7 @@ const PromotionsList = React.memo(({ addToCart, products = [] }) => {
         return;
       }
 
-      // ✅ CRITICAL FIX: Generate unique group ID for this promotion instance
+      // Generate unique group ID for this promotion instance
       const uniqueGroupId = `bogo-${promo.id}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
       console.log('🔑 Generated unique group ID:', uniqueGroupId);
 
@@ -114,7 +114,7 @@ const PromotionsList = React.memo(({ addToCart, products = [] }) => {
           ...product,
           isFromBogo: true,
           bogoPromoId: promo.id,
-          bogoGroupId: uniqueGroupId, // ✅ NEW: Unique group identifier
+          bogoGroupId: uniqueGroupId, 
           bogoPromoName: promo.name,
           bogoPromoImage: promo.bogoPromotionImage || placeholderImage,
           bogoDiscountType: promo.bogoDiscountType,
@@ -137,12 +137,11 @@ const PromotionsList = React.memo(({ addToCart, products = [] }) => {
         
         console.log(`➕ Adding ${buyQty} "${buyProduct.name}" and ${getQty} "${getProduct.name}" with group ID: ${uniqueGroupId}`);
         
-        // ✅ CRITICAL FIX: Both products share the SAME groupId for this promotion instance
         const buyProductWithFlags = {
           ...buyProduct,
           isFromBogo: true,
           bogoPromoId: promo.id,
-          bogoGroupId: uniqueGroupId, // ✅ NEW: Same group ID
+          bogoGroupId: uniqueGroupId, 
           bogoPromoName: promo.name,
           bogoPromoImage: promo.bogoPromotionImage || placeholderImage,
           bogoDiscountType: promo.bogoDiscountType,
@@ -153,7 +152,7 @@ const PromotionsList = React.memo(({ addToCart, products = [] }) => {
           ...getProduct,
           isFromBogo: true,
           bogoPromoId: promo.id,
-          bogoGroupId: uniqueGroupId, // ✅ NEW: Same group ID
+          bogoGroupId: uniqueGroupId, 
           bogoPromoName: promo.name,
           bogoPromoImage: promo.bogoPromotionImage || placeholderImage,
           bogoDiscountType: promo.bogoDiscountType,

@@ -15,7 +15,7 @@ import SalesReportModal from "./salesReportModal";
 import Loading from "../shared/loading";
 import '../../confirmAlertCustom.css';
 
-const CASHIERS_API_URL = "https://authservices-npr8.onrender.comsers/cashiers";
+const CASHIERS_API_URL = "https://authservices-npr8.onrender.com/users/cashiers";
 const EMPLOYEE_NAME_API_URL = "https://authservices-npr8.onrender.com/users/employee_name";
 
 // Helper function to format dates for the API (YYYY-MM-DD)
@@ -128,7 +128,7 @@ function SalesReport() {
       setIsLoading(true);
       setError(null);
       setReportData(null);
-      setProcessedRefundsList([]); // Clear previous refunds
+      setProcessedRefundsList([]); 
 
       const requestBody = { reportType: activeTab };
       
@@ -205,7 +205,7 @@ function SalesReport() {
           return { username, fullName: data.employee_name || username };
         } catch (error) {
           console.error(`Failed to fetch name for ${username}`, error);
-          return { username, fullName: username }; // Fallback on error
+          return { username, fullName: username }; 
         }
       });
       
@@ -269,8 +269,7 @@ function SalesReport() {
       cashDrawerDiscrepancy: reportData.cashDrawer?.discrepancy || 0,
       reportedBy: reportData.cashDrawer?.reportedBy || 'N/A',
       verifiedBy: reportData.cashDrawer?.verifiedBy || 'N/A',
-      refundsList: processedRefundsList, // Use processed list with full names
-    };
+      refundsList: processedRefundsList, 
     
     generatePDFReport(
       reportData.productBreakdown, 

@@ -100,7 +100,7 @@ function EditSpillageModal({ spillage, onClose, onUpdate, loggedByName }) {
       }
 
       const response = await fetch(
-        "http://localhost:4000/users/cashiers",
+        "https://authservices-npr8.onrender.com/users/cashiers",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -136,7 +136,7 @@ function EditSpillageModal({ spillage, onClose, onUpdate, loggedByName }) {
   const fetchAllSessions = async () => {
     try {
       const token = localStorage.getItem("authToken");
-      const response = await fetch("http://localhost:9003/wastelogs/sessions/active", {
+      const response = await fetch("https://wasteservices.onrender.com/wastelogs/sessions/active", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -209,7 +209,7 @@ function EditSpillageModal({ spillage, onClose, onUpdate, loggedByName }) {
       }
 
       const response = await fetch(
-        `http://localhost:9003/wastelogs/products-sold?session_id=${sessionId}`,
+        `https://wasteservices.onrender.com/wastelogs/products-sold?session_id=${sessionId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -308,7 +308,7 @@ function EditSpillageModal({ spillage, onClose, onUpdate, loggedByName }) {
         // Call merchandise restock-and-deduct endpoint
         console.log("Calling merchandise restock-and-deduct endpoint");
         const merchResponse = await fetch(
-          "http://localhost:8002/merchandise/restock-and-deduct-spillage-edit",
+          "https://bleu-stockservices.onrender.com/merchandise/restock-and-deduct-spillage-edit",
           {
             method: "POST",
             headers: {
@@ -333,7 +333,7 @@ function EditSpillageModal({ spillage, onClose, onUpdate, loggedByName }) {
         // It's a product - call both ingredients and materials endpoints
         console.log("Calling ingredients restock-and-deduct endpoint");
         const ingredientsResponse = await fetch(
-          "http://127.0.0.1:8002/ingredients/restock-and-deduct-spillage-edit",
+          "https://bleu-stockservices.onrender.com/ingredients/restock-and-deduct-spillage-edit",
           {
             method: "POST",
             headers: {
@@ -357,7 +357,7 @@ function EditSpillageModal({ spillage, onClose, onUpdate, loggedByName }) {
 
         console.log("Calling materials restock-and-deduct endpoint");
         const materialsResponse = await fetch(
-          "http://localhost:8002/materials/restock-and-deduct-spillage-edit",
+          "https://bleu-stockservices.onrender.com/materials/restock-and-deduct-spillage-edit",
           {
             method: "POST",
             headers: {
@@ -410,7 +410,7 @@ function EditSpillageModal({ spillage, onClose, onUpdate, loggedByName }) {
     const token = localStorage.getItem("authToken");
     
     const response = await fetch(
-      `http://localhost:9003/wastelogs/${spillage.spillage_id}`,
+      `https://wasteservices.onrender.com/wastelogs/${spillage.spillage_id}`,
       {
         method: "PUT",
         headers: {
@@ -436,7 +436,6 @@ function EditSpillageModal({ spillage, onClose, onUpdate, loggedByName }) {
 
     const updatedData = await response.json();
     
-    // ✅ Close immediately - inventory handled by backend
     console.log("Spillage updated successfully. Inventory will be adjusted in background.");
     onUpdate(updatedData);
     onClose();

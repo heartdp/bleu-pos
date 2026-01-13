@@ -11,7 +11,7 @@ const CustomerBlockchainView = () => {
 
   const saleId = parseInt(window.location.search.substring(1));
 
-  // API endpoints - separate services for security
+  // API endpoints 
   const POS_API = 'https://sales-services.onrender.com/auth/purchase_orders/receipt';
   const BLOCKCHAIN_API = 'https://blockchainservices.onrender.com/blockchain-logs/api/blockchain-logs/sale';
 

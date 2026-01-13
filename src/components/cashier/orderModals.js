@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import QRCode from 'qrcode';
 import "./orderPanel.css";
 
-const API_BASE_URL = 'https://receiptservices.onrender.com';
+const API_BASE_URL = 'https://receiptservices.onrender.com/api';
 
 const OrderModals = ({
   // PIN Modal props

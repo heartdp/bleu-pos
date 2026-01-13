@@ -26,7 +26,7 @@ const PromotionModal = ({
       setErrors({});
       setImagePreview(null);
       setImageFile(null);
-      setProductSearchTerm(""); // Add this line
+      setProductSearchTerm(""); 
     }
   }, [showModal]);
 

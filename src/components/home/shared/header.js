@@ -64,14 +64,14 @@ const Header = ({ pageTitle }) => {
 
       const data = await response.json();
       if (data && data.employee_name) {
-        setUserName(data.employee_name); // ✅ match backend key
+        setUserName(data.employee_name); 
       } else {
         console.warn("Employee name not found in response.");
-        setUserName(username); // fallback to username
+        setUserName(username); 
       }
     } catch (error) {
       console.error("Error fetching employee name:", error);
-      setUserName(username); // fallback if failed
+      setUserName(username);
     }
   }, [handleLogout]);
 
@@ -102,7 +102,7 @@ const Header = ({ pageTitle }) => {
         handleLogout();
       }
 
-      // ✅ Fetch full name instead of plain username
+      // Fetch full name instead of plain username
       fetchEmployeeName(storedUsername, storedToken);
     } else {
       console.log("No session found. Redirecting to login.");

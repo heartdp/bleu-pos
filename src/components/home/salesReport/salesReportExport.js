@@ -391,9 +391,6 @@ export const generatePDFReport = async (reportData, reportTotals, activeTab, cur
   }
 };
 
-// ============================================
-// CSV GENERATION FUNCTION
-// ============================================
 
 export const generateCSVReport = (reportData) => {
   const headers = ['Product', 'Category', 'Units Sold', 'Total Sales'];
@@ -434,9 +431,7 @@ export const generateCSVReport = (reportData) => {
   URL.revokeObjectURL(url);
 };
 
-// ============================================
-// MAIN EXPORT HANDLER
-// ============================================
+
 
 const handleSalesReportExport = (reportData, reportTotals, activeTab, currentPeriodText, selectedCashier = 'all') => {
   // If there's no data, show the No Data modal immediately

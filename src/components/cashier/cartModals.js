@@ -151,7 +151,7 @@ export const DiscountsModal = ({
     }
   }, [showDiscountsModal]);
 
-  // ✅ Helper to get per-item promotion amount
+  // Helper to get per-item promotion amount
   const getItemPromotionAmount = (itemIndex) => {
     if (!autoPromotion || !autoPromotion.itemPromotions) return 0;
     const itemPromo = autoPromotion.itemPromotions.find(p => p.itemIndex === itemIndex);
@@ -211,14 +211,14 @@ export const DiscountsModal = ({
   const handleSelectAll = () => {
     if (!selectedDiscount) return;
     
-    // ✅ FIXED: Exclude BOGO items from select all
+    // Exclude BOGO items from select all
     const eligibleItems = cartItems
       .map((item, index) => ({ item, index }))
       .filter(({ item, index }) => 
         isItemEligible(item, selectedDiscount) && 
         getAvailableQuantity(index) > 0 &&
         isDiscountBetterThanPromotion(item, index, selectedDiscount) &&
-        !item.isFromBogo // ✅ FIXED: Exclude BOGO items
+        !item.isFromBogo 
       );
     
     const allSelected = eligibleItems.every(({ index }) => 
@@ -238,7 +238,7 @@ export const DiscountsModal = ({
 
   const isItemEligible = (item, discount) => {
     if (!discount) return false;
-    if (item.isFromBogo) return false; // ✅ FIXED: Exclude BOGO items
+    if (item.isFromBogo) return false; 
     
     switch (discount.applicationType) {
       case 'all_products': return true;
@@ -248,7 +248,7 @@ export const DiscountsModal = ({
     }
   };
 
-  // ✅ Check if discount is better than promotion for this specific item
+  // Check if discount is better than promotion for this specific item
   const isDiscountBetterThanPromotion = (item, itemIndex, discount) => {
     if (!discount) return false;
     
@@ -365,13 +365,13 @@ export const DiscountsModal = ({
 
   const subtotal = getSubtotal();
   
-  // ✅ FIXED: Filter out BOGO items from eligible items
+  //Filter out BOGO items from eligible items
   const eligibleItems = cartItems.filter((item, index) => 
     selectedDiscount ? 
       isItemEligible(item, selectedDiscount) && 
       getAvailableQuantity(index) > 0 &&
       isDiscountBetterThanPromotion(item, index, selectedDiscount) &&
-      !item.isFromBogo // ✅ FIXED: Exclude BOGO items
+      !item.isFromBogo 
     : false
   );
   
@@ -504,7 +504,7 @@ export const DiscountsModal = ({
                 
                 {selectedDiscount && eligibleItems.length > 0 && cartItems.map((item, index) => {
                   if (!isItemEligible(item, selectedDiscount)) return null;
-                  if (item.isFromBogo) return null; // ✅ FIXED: Don't show BOGO items
+                  if (item.isFromBogo) return null; 
                   
                   const availableQty = getAvailableQuantity(index);
                   if (availableQty === 0) return null;
@@ -719,7 +719,6 @@ export const TransactionSummaryModal = ({
             <div className="trnsSummary-items-scrollable">
               {groupedItems.map((group, groupIndex) => {
                 if (group.type === 'bogo') {
-                  // BOGO items - same layout as regular items
                   return group.items.map(({ item, index }) => {
                     const itemDiscount = getItemDiscount ? getItemDiscount(index) : 0;
                     const itemPromotion = getItemPromotion ? getItemPromotion(index) : 0;

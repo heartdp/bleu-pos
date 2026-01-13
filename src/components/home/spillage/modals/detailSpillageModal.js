@@ -16,7 +16,7 @@ function SpillageDetailsModal({ show, onClose, spillage, userRole, onEdit, onDel
     setIsLoadingCashier(true);
     try {
       const token = localStorage.getItem("authToken");
-      const response = await fetch("http://localhost:4000/users/cashiers", {
+      const response = await fetch("https://authservices-npr8.onrender.com/users/cashiers", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

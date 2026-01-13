@@ -35,7 +35,6 @@ import Loading from "../shared/loading";
 import CustomDateModal from "../shared/customDateModal";
 import "../../confirmAlertCustom.css";
 
-// --- HELPER FUNCTION FOR DISPLAYING DATE RANGES ---
 const getPeriodText = (dateRange, customStart = null, customEnd = null) => {
   const today = new Date();
   const options = { month: "short", day: "numeric", year: "numeric" };
@@ -273,7 +272,7 @@ function SalesMonitoring() {
       (a, b) => b[1] - a[1]
     )[0];
     const topCashier = topCashierEntry
-      ? { name: topCashierEntry[0], sales: topCashierEntry[1] } // name is username
+      ? { name: topCashierEntry[0], sales: topCashierEntry[1] } 
       : null;
 
     return {
@@ -309,11 +308,11 @@ function SalesMonitoring() {
           const data = await response.json();
           setTopCashierFullName(data.employee_name);
         } else {
-          setTopCashierFullName(metrics.topCashier.name); // Fallback to username
+          setTopCashierFullName(metrics.topCashier.name); 
         }
       } catch (err) {
         console.error("Error fetching top cashier's name:", err);
-        setTopCashierFullName(metrics.topCashier.name); // Fallback on error
+        setTopCashierFullName(metrics.topCashier.name); 
       }
     };
 

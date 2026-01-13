@@ -22,26 +22,47 @@ const sendOrderEmail = async (order, emailType, token) => {
 
     const emailPayload = {
       customer_name: order.customerName,
+      customer_email: order.email || null,  
       order_id: String(order.id),
       order_type: order.orderType,
       status: order.status,
-      items: order.orderItems.map(item => ({
-        name: item.name,
-        quantity: item.quantity,
-        price: item.price,
-        addons: (item.addons || []).map(addon => ({
-          addon_id: addon.addon_id || addon.AddonID || 0,
-          addon_name: addon.addon_name || addon.AddonName || addon.name || '',
-          price: addon.price || addon.Price || 0
-        }))
-      })),
+      items: order.orderItems.map(item => {
+        // Build item object with promo information
+        const itemObj = {
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price,
+          addons: (item.addons || []).map(addon => ({
+            addon_id: addon.addon_id || addon.AddonID || 0,
+            addon_name: addon.addon_name || addon.AddonName || addon.name || '',
+            price: addon.price || addon.Price || 0
+          }))
+        };
+        // Add promo information if available
+        if (item.promo_name) {
+          itemObj.promo_name = item.promo_name;
+        }
+        if (item.applied_promo) {
+          itemObj.promo_type = item.applied_promo.promotionType;
+          itemObj.promo_value = item.applied_promo.promotionValue;
+        }
+        if (item.discount && item.discount > 0) {
+          itemObj.promo_discount = item.discount;
+        }
+        return itemObj;
+      }),
       total: order.total,
       payment_method: order.paymentMethod,
       delivery_address: order.deliveryAddress || null,
       phone_number: order.phoneNumber || null,
-      reference_number: order.reference_number || null
+      reference_number: order.reference_number || null,
+      delivery_fee: order.deliveryFee || null  
     };
+    // Only include customer_id if it exists
 
+    if (order.customerId) {
+      emailPayload.customer_id = order.customerId;
+    }
     console.log('📧 Email Payload:', JSON.stringify(emailPayload, null, 2));
 
     const endpoint = emailType === 'accepted' 
@@ -179,7 +200,8 @@ function Orders() {
               cashierName: order.cashierName || 'Unknown',
               reference_number: order.gcashReference || order.GCashReferenceNumber || null,
               updatedAt: order.updatedAt || order.date,
-              email: order.email || order.customer_email || null
+              email: order.email || order.customer_email || null,
+              deliveryFee: order.deliveryFee || 0
             };
           }).filter(o => o.orderType === 'Dine in' || o.orderType === 'Take out');
           
@@ -191,7 +213,6 @@ function Orders() {
       }
 
       // Process online orders
-      // Process online orders - FIXED SECTION
 if (onlineResponse.status === 'fulfilled' && onlineResponse.value.ok) {
   const data = await onlineResponse.value.json();
   const orders = Array.isArray(data) ? data : [];
@@ -211,10 +232,8 @@ if (onlineResponse.status === 'fulfilled' && onlineResponse.value.ok) {
         size: item.size || 'Standard', 
         category: item.category,
         addons: item.addons || [],
-        // Add promotion data to items
         itemPromotions: itemPromotion ? [itemPromotion] : (item.itemPromotions || []),
         itemDiscounts: item.itemDiscounts || [],
-        // Keep original fields for compatibility
         promo_name: item.promo_name,
         applied_promo: item.applied_promo,
         discount: item.discount || 0
@@ -257,20 +276,21 @@ if (onlineResponse.status === 'fulfilled' && onlineResponse.value.ok) {
       date: new Date(order.order_date),
       orderType: order.order_type,
       paymentMethod: order.payment_method,
-      subtotal: fullSubtotal,  // Full subtotal with addons
-      total: Math.max(0, finalTotal),  // Final amount after deductions
+      subtotal: fullSubtotal,  
+      total: Math.max(0, finalTotal),  
       status: order.order_status ? order.order_status.toUpperCase() : 'UNKNOWN',
       items: totalQuantity,
       orderItems: parsedItems,
       source: 'online',
-      promotionalDiscount: totalPromotions,  // Store total promotions
-      manualDiscount: 0,  // Online orders have no manual discounts
+      promotionalDiscount: totalPromotions,  
+      manualDiscount: 0,  
       addOns: totalAddOnsCost,
       cashierName: order.cashier_name || 'Unknown',
       reference_number: order.reference_number || order.gcash_reference_number || null,
       email: order.emailAddress || order.email || null,
       phoneNumber: order.phoneNumber || null,
-      deliveryAddress: order.deliveryAddress || null
+      deliveryAddress: order.deliveryAddress || null,
+      deliveryFee: order.deliveryFee || (order.order_type && order.order_type.toLowerCase() === 'delivery' ? 50.0 : 0)
     };
   });
 } else {
@@ -511,13 +531,33 @@ if (onlineResponse.status === 'fulfilled' && onlineResponse.value.ok) {
           cartItems: merchandiseItems
         };
 
+        // Prepare the full item list with promotions for potential synchronization ---
+        const orderItemsForSync = orderToUpdate.orderItems.map(item => ({
+            name: item.name,
+            quantity: item.quantity,
+            price: item.price,
+            category: item.category,
+            addons: item.addons || [],
+            discount: item.discount || 0.0,
+            promo_name: item.promo_name || (item.itemPromotions && item.itemPromotions[0]?.promotionName) || null,
+            itemPromotions: item.itemPromotions || [],
+            itemDiscounts: item.itemDiscounts || []
+        }));
+
+        // The POS status update payload for acceptance
+        const posUpdatePayload = {
+            newStatus: 'processing',
+            cashier_name: username,
+            items: orderItemsForSync
+        };
+
         const criticalUpdates = [];
 
         criticalUpdates.push(
           fetch(`${SALES_API_BASE_URL}/auth/purchase_orders/online/${encodeURIComponent(referenceNumber)}/status`, {
             method: 'PATCH',
             headers,
-            body: JSON.stringify({ newStatus: 'processing' })
+            body: JSON.stringify(posUpdatePayload)
           })
         );
 
@@ -918,7 +958,6 @@ if (onlineResponse.status === 'fulfilled' && onlineResponse.value.ok) {
     if (location.state?.selectedOrderId && location.state?.openPanel) {
       console.log('📍 Navigation state detected:', location.state);
       
-      // Remove the 'SO-' prefix if it exists
       const orderIdToFind = String(location.state.selectedOrderId).replace(/^SO-/, '');
       console.log('🔍 Looking for order ID:', orderIdToFind);
       
@@ -948,7 +987,7 @@ if (onlineResponse.status === 'fulfilled' && onlineResponse.value.ok) {
         console.log('Available order IDs:', allOrders.map(o => o.id));
       }
       
-      return; // Exit early to prevent the normal selection logic
+      return; 
     }
 
     // Normal selection logic for filtered data

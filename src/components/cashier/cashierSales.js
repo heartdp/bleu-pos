@@ -60,7 +60,7 @@ function CashierSales({ shiftLabel = "Morning Shift", shiftTime = "6:00AM – 2:
 
   // PIN Modal states
   const [showPinModal, setShowPinModal] = useState(false);
-  const [pinModalType, setPinModalType] = useState(null); // 'confirm' or 'discrepancy'
+  const [pinModalType, setPinModalType] = useState(null); 
   const [enteredPin, setEnteredPin] = useState("");
   const [pinError, setPinError] = useState("");
 
@@ -98,7 +98,7 @@ function CashierSales({ shiftLabel = "Morning Shift", shiftTime = "6:00AM – 2:
     localStorage.removeItem('username');
     
     // Redirect to login page
-    window.location.href = 'http://localhost:4002/';
+    window.location.href = 'https://bleu-ums-zeta.vercel.app';
   };
 
   useEffect(() => {

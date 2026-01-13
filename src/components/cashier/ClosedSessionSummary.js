@@ -59,7 +59,7 @@ function ClosedSessionSummary() {
   }, []);
 
   const handleReturnToLogin = () => {
-    window.location.href = 'http://localhost:4002/';
+    window.location.href = 'https://bleu-ums-zeta.vercel.app/';
   };
 
   const formatCurrency = (value) => {
