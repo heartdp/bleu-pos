@@ -11,7 +11,7 @@ const CustomerBlockchainView = () => {
 
   // Parse sale ID, removing "SO-" prefix if present
   const urlParam = window.location.search.substring(1);
-  const saleId = parseInt(urlParam.replace(/^SO-/, ''));
+  const saleId = parseInt(urlParam.replace(/^/, ''));
 
   // API endpoints 
   const POS_API = 'https://sales-services.onrender.com/auth/purchase_orders/receipt';
