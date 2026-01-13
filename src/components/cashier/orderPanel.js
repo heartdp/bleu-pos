@@ -94,28 +94,39 @@ function OrderPanel({ order, onClose, isOpen, isStore, onUpdateStatus, onFullRef
 
   if (!order) return null;
 
-  const calculateOnlineSubtotals = () => {
-    let baseSubtotal = 0;
-    let addOnsTotal = 0;
+  // --- FIX: Calculate Gross Subtotal (Items + Addons) in Frontend ---
+  // This calculates the gross subtotal regardless of whether the backend passed a value (order.subtotal).
+  const calculateGrossSubtotal = () => {
+    let grossSubtotal = 0;
 
     order.orderItems.forEach(item => {
-      baseSubtotal += item.price * item.quantity;
-      
+      // 1. Base item price * quantity
+      grossSubtotal += item.price * item.quantity;
+
+      // 2. Addons cost
       if (item.addons && item.addons.length > 0) {
         item.addons.forEach(addon => {
-          addOnsTotal += (addon.price || addon.Price || 0);
+          // Addon price is per unit. The 'quantity' field here is the TOTAL count of the addon sold for that SaleItem.
+          const addonPrice = addon.price || addon.Price || 0;
+          const addonQuantity = addon.quantity || 1;
+
+          grossSubtotal += addonPrice * addonQuantity;
         });
       }
     });
 
-    return { baseSubtotal, addOnsTotal };
+    return grossSubtotal;
   };
 
-  const { baseSubtotal: onlineBaseSubtotal, addOnsTotal: onlineAddOnsTotal } = 
-    !isStore ? calculateOnlineSubtotals() : { baseSubtotal: 0, addOnsTotal: 0 };
+  // Use the calculated gross subtotal for the summary display
+  const subtotal = calculateGrossSubtotal();
 
-  const subtotal = order.subtotal || 0;
-  const addOnsCost = order.addOns || 0;
+  // These variables are no longer needed with the robust calculation above,
+  // but are kept as placeholders for the sake of the existing code structure.
+  const onlineBaseSubtotal = 0;
+  const onlineAddOnsTotal = 0;
+  const addOnsCost = order.addOns || 0; // Still used for refund calculation/OrderModals
+  // --- END FIX ---
   
   const getItemFinancials = (item) => {
     const totalItemDiscount = (item.itemDiscounts || []).reduce((sum, d) => sum + d.discountAmount, 0);
