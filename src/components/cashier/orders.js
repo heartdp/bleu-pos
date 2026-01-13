@@ -152,7 +152,7 @@ function Orders() {
 
       const storeStatusesToFetch = ['processing', 'completed', 'cancelled', 'refunded'];
       const storeFetchPromises = storeStatusesToFetch.map(status =>
-        fetch(`${SALES_API_BASE_URL}/auth/sales/status/${status}`, { headers })
+        fetch(`${SALES_API_BASE_URL}/auth/purchase_orders/status/${status}`, { headers })
       );
 
       const [onlineResponse, ...storeResponsesSettled] = await Promise.allSettled([
