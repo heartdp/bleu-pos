@@ -1190,3 +1190,8 @@ if (onlineResponse.status === 'fulfilled' && onlineResponse.value.ok) {
 }
 
 export default Orders;
+    </div>
+  );
+}
+
+export default Orders;
